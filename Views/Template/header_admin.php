@@ -39,7 +39,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
     </div>
 
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="<?=base_url();?>/dashboard">SigmaSoft</a>
+    <header class="app-header"><a class="app-header__logo" href="<?=base_url();?>/dashboard"><img src="" alt="Assets/image/ombe.png"></a>
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
             aria-label="Hide Sidebar"></a>
         <!-- Navbar Menu-->

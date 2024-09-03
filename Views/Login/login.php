@@ -26,8 +26,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
         <div class="cover"></div>
     </section>
     <section class="login-content">
-        <div class="logo">
-            <h1>SigmaSoft</h1>
+        <div class="logo"><img src="Assets/images/ombe.png" alt="">
         </div>
         <div class="login-box">
             <div id="divLoading">
@@ -37,7 +36,8 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
             </div>
 
             <form class="login-form" name="formLogin" id="formLogin" action="">
-                <h3 class="login-head"><i class="bi bi-person me-2"></i>Iniciar Sesión</h3>
+                <h3 class="login-head"><i class="bi bi-person-fill"></i> Iniciar Sesión</h3>
+                
 
                 <div class="mb-3">
                     <br>
@@ -45,6 +45,8 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
                     <input id="txtIdentificacion" name="txtIdentificacion" class="form-control" type="number"
                         placeholder="Identificación" autofocus>
                 </div>
+
+
                 <div class="mb-3">
                     <label class="form-label">Contraseña</label>
                     <input id="txtPassword" name="txtPassword" class="form-control" type="password"
@@ -54,8 +56,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
                 <div id="alertLogin" class="text-center"></div>
 
                 <div class="mb-3 btn-container d-grid">
-                    <button type="submit" class="btn btn-primary btn-block"><i
-                            class="bi bi-box-arrow-in-right me-2 fs-5"></i> Iniciar
+                    <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-arrow-right-circle"></i> Iniciar
                         Sesión</button>
                 </div>
             </form>
