@@ -35,57 +35,27 @@ class Perfil extends Controllers
 
         if ($_POST || $_FILES) {
 
-            // Validar si llegó la foto
             if (!isset($_FILES['fotoUsuario']) || $_FILES['fotoUsuario']['error'] != 0) {
-                $arrResponse = array("status" => false, "msg" => 'Debe seleccionar una foto.');
-                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                echo json_encode(["status" => false, "msg" => "Debe seleccionar una foto."], JSON_UNESCAPED_UNICODE);
                 die();
             }
 
-            $intIdeUsuario = intval(trim($_POST['ideUsuarioperfil']));
-            $fotoUsuario = $_FILES['fotoUsuario'];
-            $request_user = "";
-            $nombreFotoBD = "";
+            // ID del usuario logueado
+            $intIdeUsuario = $_SESSION['idUser'];
 
-            // Generar un nombre único para guardar en BD
+            $fotoUsuario = $_FILES['fotoUsuario'];
             $nombreArchivo = uniqid() . "_" . $fotoUsuario['name'];
 
-            // Subir la imagen usando tu helper
+            // Subir imagen
             uploadImage($fotoUsuario, $nombreArchivo);
 
-            if ($intIdeUsuario == 0) {
-                // INSERTAR nuevo usuario
-                $option = 1;
+            // Actualizar SOLO foto
+            $request = $this->model->updateFotoPerfil($intIdeUsuario, $nombreArchivo);
 
-                if ($_SESSION['permisosMod']['w']) {
-                    $request_user = $this->model->insertPerfil(
-                        $nombreArchivo   // ← ahora sí se envía STRING a tu modelo
-                    );
-                }
+            if ($request > 0) {
+                $arrResponse = ['status' => true, 'msg' => 'Foto actualizada correctamente', 'foto' => $nombreArchivo];
             } else {
-                // ACTUALIZAR usuario existente
-                $option = 2;
-
-                if ($_SESSION['permisosMod']['u']) {
-                    $request_user = $this->model->updateUsuario(
-                        $intIdeUsuario,
-                        $nombreArchivo   // ← foto nueva
-                    );
-                }
-            }
-
-            // RESPUESTAS
-            if ($request_user > 0) {
-                $arrResponse = array(
-                    'status' => true,
-                    'msg' => ($option == 1)
-                        ? 'Usuario guardado correctamente'
-                        : 'Usuario actualizado correctamente'
-                );
-            } else if ($request_user == 'exist') {
-                $arrResponse = array('status' => false, 'msg' => 'La identificación ya existe.');
-            } else {
-                $arrResponse = array('status' => false, 'msg' => 'No se pudieron almacenar los datos.');
+                $arrResponse = ['status' => false, 'msg' => 'No se pudo actualizar la foto'];
             }
 
             echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
@@ -93,7 +63,6 @@ class Perfil extends Controllers
 
         die();
     }
-
 
 
     // lista de la tabla usuarios

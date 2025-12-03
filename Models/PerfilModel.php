@@ -17,22 +17,14 @@ class PerfilModel extends Mysql
         parent::__construct();
     }
 
-    public function insertPerfil(
-        string $fotoUsuario,
-        
-    ) {
-        $this->strFotoUsuario = $fotoUsuario;
-
-        // Consulta directamente para insertar, sin verificar duplicados
-        $query_insert = "INSERT INTO tbl_usuarios(imgperfil) VALUES(?)";
-
-        $arrData = array(
-            $this->strFotoUsuario // Ahora se guarda la foto
-        );
-
-        $request_insert = $this->insert($query_insert, $arrData);
-        return $request_insert; // Devuelve el ID del usuario insertado o false si falla
+    public function updateFotoPerfil(int $idUser, string $foto)
+    {
+        $sql = "UPDATE tbl_usuarios SET imgperfil=? WHERE ideusuario = $idUser";
+        $arrData = array($foto);
+        return $this->update($sql, $arrData);
     }
+
+
 
     // LISTADO DE LA TABLA
     public function selectPerfil()
