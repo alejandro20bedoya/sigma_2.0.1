@@ -1,11 +1,11 @@
 <?php
-const BASE_URL = "http://localhost/sigma-tps";
+const BASE_URL = "http://localhost/sigma";
 
 //Zona horaria
 date_default_timezone_set('America/Bogota');
 
 //Datos de conexión a Base de Datos
-const DB_HOST = "localhost:3307";
+const DB_HOST = "localhost";
 const DB_NAME = "sigma";
 const DB_USER = "root";
 const DB_PASSWORD = "";
@@ -36,15 +36,18 @@ const KEY = 'joseramos';
 const METHODENCRIPT = "AES-128-ECB";
 
 //Módulos
-const MDADMINISTRADOR = 1;
-const MDPROGRAMAS = 2;
-const MDINICIO = 3;
-
+const MDASHBOARD = 1;
+const MINICIO = 2;
+const MUSUARIOS = 3;
+const MPROGRAMAS = 4;
+const MFICHAS = 5;
+const MCOMPETENCIAS = 6;
+const MASIGNACIONES = 7;
+const MREPORTES = 8;
 //Páginas
 const PINICIO = 1;
 
 //Roles
 const RADMINISTRADOR = 1;
 const RCOORDINADOR = 2;
-const RADMINISTRATIVO = 3;
-const RINSTRUCTOR = 4;
+

@@ -11,7 +11,7 @@ class Usuarios extends Controllers
             header('Location: ' . base_url() . '/login');
             die();
         }
-        getPermisos(MDADMINISTRADOR);
+        getPermisos(MUSUARIOS);
     }
 
     public function Usuarios()
@@ -26,6 +26,7 @@ class Usuarios extends Controllers
         $this->views->getView($this, "usuarios", $data);
     }
 
+    // funcione para agregar 
     public function setUsuario()
     {
         error_reporting(0);
@@ -35,19 +36,25 @@ class Usuarios extends Controllers
             } else {
                 $intIdeUsuario = intval($_POST['ideUsuario']);
                 $strIdentificacionUsuario = strClean($_POST['txtIdentificacionUsuario']);
-                $strnombresUsuario = strClean($_POST['txtnombresUsuario']);
-                $strRolUsuario = intval(strClean($_POST['txtRolUsuario']));
+                $strNombresUsuario = strClean($_POST['txtNombresUsuario']);  /// sonas de cambio 
+                $strApellidosUsuario = strClean($_POST['txtApellidosUsuario']);
+                $strCelularUsuario = strClean($_POST['txtCelularUsuario']);
+                $strCorreoUsuario = strClean($_POST['txtCorreoUsuario']);
+                $strRolUsuario = intval(strClean($_POST['listRol']));
                 $intStatus = intval(strClean($_POST['listStatus']));
 
                 // $intTipoId = 5;
                 $request_user = "";
                 if ($intIdeUsuario == 0) {
                     $option = 1;
-                    $strPassword =  empty($_POST['txtIdentificacionUsuario']) ? hash("SHA256",passGenerator()) : hash("SHA256",$_POST['txtIdentificacionUsuario']);
+                    $strPassword =  empty($_POST['txtIdentificacionUsuario']) ? hash("SHA256", passGenerator()) : hash("SHA256", $_POST['txtIdentificacionUsuario']);
                     if ($_SESSION['permisosMod']['w']) {
                         $request_user = $this->model->insertUsuario(
                             $strIdentificacionUsuario,
-                            $strnombresUsuario,
+                            $strNombresUsuario,
+                            $strApellidosUsuario, /// sonas de cambio 
+                            $strCelularUsuario, /// sonas de cambio 
+                            $strCorreoUsuario, /// sonas de cambio 
                             $strPassword,
                             $strRolUsuario,
                             $intStatus
@@ -56,13 +63,17 @@ class Usuarios extends Controllers
                     }
                 } else {
                     $option = 2;
-                    $strPassword =  empty($_POST['txtIdentificacionUsuario']) ? hash("SHA256",passGenerator()) : hash("SHA256",$_POST['txtIdentificacionUsuario']);
+                    $strPassword =  empty($_POST['txtIdentificacionUsuario']) ? hash("SHA256", passGenerator()) : hash("SHA256", $_POST['txtIdentificacionUsuario']);
                     if ($_SESSION['permisosMod']['u']) {
                         $request_user = $this->model->updateUsuario(
                             $intIdeUsuario,
                             $strIdentificacionUsuario,
+                            $strNombresUsuario,
+                            $strApellidosUsuario, /// sonas de cambio 
+                            $strCelularUsuario,
+                            $strCorreoUsuario,
                             $strRolUsuario,
-                            $intStatus
+                            $intStatus,
                         );
                     }
                 }
@@ -83,19 +94,20 @@ class Usuarios extends Controllers
         die();
     }
 
+    // lista de la tabla usuarios
     public function getUsuarios()
     {
         if ($_SESSION['permisosMod']['r']) {
             $arrData = $this->model->selectUsuarios();
+
             for ($i = 0; $i < count($arrData); $i++) {
                 $btnView = '';
                 $btnEdit = '';
                 $btnDelete = '';
 
-                if($arrData[$i]['status'] == 1)
-                {
+                if ($arrData[$i]['status'] == 1) {
                     $arrData[$i]['status'] = '<span class="badge text-bg-success">Activo</span>';
-                }else{
+                } else {
                     $arrData[$i]['status'] = '<span class="badge text-bg-danger">Inactivo</span>';
                 }
 
@@ -107,7 +119,6 @@ class Usuarios extends Controllers
                 }
                 if ($_SESSION['permisosMod']['d']) {
                     $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelInfo(' . $arrData[$i]['ideusuario'] . ')" title="Eliminar Usuario"><i class="bi bi-trash3"></i></button>';
-       
                 }
 
                 $arrData[$i]['options'] = '<div class="text-center">' . $btnView . ' ' . $btnEdit . ' ' . $btnDelete . '</div>';
@@ -117,6 +128,7 @@ class Usuarios extends Controllers
         die();
     }
 
+    // editar usuario
     public function getUsuario($ideusuario)
     {
         if ($_SESSION['permisosMod']['r']) {
@@ -133,7 +145,7 @@ class Usuarios extends Controllers
         }
         die();
     }
-
+    // ELIMINAR USUARIO
     public function delUsuario()
     {
         if ($_POST) {
@@ -150,5 +162,4 @@ class Usuarios extends Controllers
         }
         die();
     }
-
 }

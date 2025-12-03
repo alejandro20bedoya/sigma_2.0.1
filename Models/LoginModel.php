@@ -15,7 +15,7 @@ class LoginModel extends Mysql
     {
         $this->strIdentificacion = $identificacion;
         $this->strPassword = $password;
-        $sql = "SELECT ideusuario,status FROM tbl_usuarios WHERE
+        $sql = "SELECT ideusuario, status FROM tbl_usuarios WHERE
 					identificacion = '$this->strIdentificacion' and
 					password = '$this->strPassword' and
 					status != 0 ";
@@ -29,6 +29,7 @@ class LoginModel extends Mysql
         //BUSCAR ROL
         $sql = "SELECT tu.ideusuario,
 							tu.identificacion,
+                            tu.nombres,
 							tu.imgperfil,
 							r.idrol,
                             r.nombrerol,

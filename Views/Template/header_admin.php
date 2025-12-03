@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="TPS La Jagua de Ibirico">
-    <link rel="shortcut icon" href="<?=media();?>/images/favicon.ico">
-    <title><?=$data['page_tag']?></title>
+    <link rel="shortcut icon" href="<?= media(); ?>/images/clock-fill.svg">
+    <title><?= $data['page_tag'] ?></title>
 
     <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="<?=media();?>/css/main.css">
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/main.css">
     <!-- Font-icon css 2024-->
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -19,18 +19,16 @@
     <!-- Javascripts-->
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
 
-    <link href="
-https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
-" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="<?=media();?>/js/fullcalendar/lib/main.css">
-    <script src="<?=media();?>/js/fullcalendar/jquery-3.6.0.min.js"></script>
-    <script src="<?=media();?>/js/fullcalendar/lib/main.min.js"></script>
-    <script type='text/javascript' src='<?=media();?>/js/fullcalendar/locale/es.js'></script>
+    <link rel="stylesheet" href="<?= media(); ?>/js/fullcalendar/lib/main.css">
+    <script src="<?= media(); ?>/js/fullcalendar/jquery-3.6.0.min.js"></script>
+    <script src="<?= media(); ?>/js/fullcalendar/lib/main.min.js"></script>
+    <script type='text/javascript' src='<?= media(); ?>/js/fullcalendar/locale/es.js'></script>
 
 </head>
 
-<body class="app sidebar-mini">
+<body class="app sidebar-mini sidenav-toggled">
 
     <div id="divLoading">
         <div class="spinner-border visually-hidden" role="status">
@@ -39,7 +37,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
     </div>
 
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="<?=base_url();?>/dashboard"><img src="" alt="Assets/image/ombe.png"></a>
+    <header class="app-header"><a class="app-header__logo" href="<?= base_url(); ?>/dashboard"> <img src="<?= media(); ?>/images/ombe.png" alt="Imagen de ombe" style="width:100px; height:40px; object-fit:cover;"></a>
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
             aria-label="Hide Sidebar"></a>
         <!-- Navbar Menu-->
@@ -49,12 +47,13 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
             <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
                     aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
                 <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" href="<?=base_url();?>/dashboard"><i class="bi bi-gear me-2 fs-5"></i>
+                    <li><a class="dropdown-item" href="<?= base_url(); ?>/dashboard"><i class="bi bi-gear me-2 fs-5"></i>
                             Configuración</a></li>
-                    <li><a class="dropdown-item" href="<?=base_url();?>/dashboard"><i
+                    <!-- perfil de usuario -->
+                    <li><a class="dropdown-item" href="<?= base_url(); ?>/perfil"><i
                                 class="bi bi-person me-2 fs-5"></i> Perfil</a>
                     </li>
-                    <li><a class="dropdown-item" href="<?=base_url();?>/logout"><i
+                    <li><a class="dropdown-item" href="<?= base_url(); ?>/logout"><i
                                 class="bi bi-box-arrow-right me-2 fs-5"></i>
                             Salir</a></li>
                 </ul>
@@ -62,4 +61,101 @@ https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
         </ul>
     </header>
 
-    <?php require_once "nav_admin.php";?>
+    <script>
+        document.getElementById("selectPrograma").addEventListener("change", function() {
+            let filtro = this.value; // progreso | completado | todos
+            let items = document.querySelectorAll("#competenciasContainer .competencia-box");
+
+            items.forEach(item => {
+                let estado = item.querySelector(".estado").textContent.trim().toLowerCase();
+
+                if (filtro === "todos") {
+                    item.style.display = "flex";
+                } else if (filtro === "progreso" && estado === "en progreso") {
+                    item.style.display = "flex";
+                } else if (filtro === "completado" && estado === "completado") {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const percent = document.querySelector(".percent");
+            const progressCircle = percent.querySelector(".progress");
+            const progressText = document.getElementById("progressValue");
+
+            const value = parseInt(percent.getAttribute("data-num")) || 0;
+            const circumference = 440;
+            const targetOffset = circumference - (circumference * value) / 100;
+
+            let current = 0;
+            const duration = 2000; // 2 segundos
+            const interval = 20; // velocidad de incremento
+            const step = value / (duration / interval);
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= value) {
+                    current = value;
+                    clearInterval(timer);
+                }
+                progressCircle.style.strokeDashoffset = circumference - (circumference * current) / 100;
+                progressText.innerHTML = Math.round(current) + "<span>%</span>";
+            }, interval);
+        });
+    </script>
+
+    <script>
+        document.getElementById("selectFicha").addEventListener("change", function() {
+            const ficha = this.value;
+
+            fetch(base_url + "/Dashboard/getProgresoAsignacion/" + ficha)
+                .then(response => response.json())
+                .then(data => {
+                    const nuevoProgreso = data.progreso || 0;
+                    actualizarProgreso(nuevoProgreso);
+                })
+                .catch(error => console.error("Error al consultar progreso:", error));
+        });
+
+        function actualizarProgreso(value) {
+            const percent = document.querySelector(".percent");
+            const progressCircle = percent.querySelector(".progress");
+            const progressText = document.getElementById("progressValue");
+
+            const circumference = 440;
+            const targetOffset = circumference - (circumference * value) / 100;
+
+            let current = 0;
+            const duration = 2000; // 2 segundos
+            const interval = 20;
+            const step = value / (duration / interval);
+
+            clearInterval(window.timerProgreso);
+            window.timerProgreso = setInterval(() => {
+                current += step;
+                if (current >= value) {
+                    current = value;
+                    clearInterval(window.timerProgreso);
+                }
+                progressCircle.style.strokeDashoffset = circumference - (circumference * current) / 100;
+                progressText.innerHTML = Math.round(current) + "<span>%</span>";
+            }, interval);
+        }
+
+
+        document.getElementById("buscarCompetencia").addEventListener("keyup", function() {
+            let filtro = this.value.toLowerCase();
+            let items = document.querySelectorAll(".competencia-box");
+
+            items.forEach(item => {
+                let texto = item.innerText.toLowerCase();
+                item.style.display = texto.includes(filtro) ? "" : "none";
+            });
+        });
+    </script>
+    <?php require_once "nav_admin.php"; ?>

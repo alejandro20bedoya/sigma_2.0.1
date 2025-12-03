@@ -11,7 +11,7 @@ class Roles extends Controllers
             header('Location: ' . base_url() . '/login');
             die();
         }
-        getPermisos(MDADMINISTRADOR);
+        getPermisos(RADMINISTRADOR);
     }
 
     public function Roles()
@@ -59,14 +59,10 @@ class Roles extends Controllers
                     $btnView = '<button class="btn btn-secondary btn-sm" disabled ><i class="fas fa-key"></i></button>';
                     $btnEdit = '<button class="btn btn-secondary btn-sm" disabled ><i class="fas fa-pencil-alt"></i></button>';
                 }
+
                 if ($_SESSION['permisosMod']['d']) {
 
-                    if (($_SESSION['idUser'] == 1 and $_SESSION['userData']['idrol'] == 1) and
-                        ($_SESSION['userData']['idrol'] == 1 and $arrData[$i]['idrol'] == 1)
-                    ) {
-                        $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelRol(' . $arrData[$i]['idrol'] . ')" title="Eliminar"><i class="bi bi-trash3"></i></button>
-					</div>';
-                    }
+                        $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelRol(' . $arrData[$i]['idrol'] . ')" title="Eliminar"><i class="bi bi-trash3"></i></button></div>';
                 } else {
                     $btnDelete = '<button class="btn btn-secondary btn-sm" disabled ><i class="fas fa-key"></i></button>';
                 }

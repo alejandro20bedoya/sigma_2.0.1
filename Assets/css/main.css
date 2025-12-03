@@ -13486,7 +13486,7 @@ textarea.form-control-lg {
   font-family: "Roboto";
   padding: 0 15px;
   font-size: 26px;
-  font-weight: 400;
+  font-weight: 40;
   line-height: 50px;
   text-decoration: none;
 }
@@ -14892,3 +14892,7 @@ textarea.form-control-lg {
 .user .user-settings label {
   color: #666;
 }
+
+/* estilos del modal de usuario */
+
+

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Sigma">
-    <link rel="shortcut icon" href="<?=media();?>/images/favicon.ico">
+    <link rel="shortcut icon" href="<?=media();?>/images/clock-fill.svg">
 
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="<?=media();?>/css/main.css">
@@ -15,8 +15,8 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <link href="
-https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
-" rel="stylesheet">
+    https://cdn.jsdelivr.net/npm/bootstrap-sweetalert@1.0.1/dist/sweetalert.min.css
+    " rel="stylesheet">
 
     <title><?=$data['page_tag'];?></title>
 </head>

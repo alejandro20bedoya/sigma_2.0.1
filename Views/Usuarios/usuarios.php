@@ -7,12 +7,12 @@ headerAdmin($data);
         <div>
             <h1><i class="bi bi-people"></i> <?=$data['page_title']?>
                 <?php if ($_SESSION['permisosMod']['w']) {?>
-                <button class="btn btn-warning" type="button" data-bs-toggle="modal" onclick="openModal();">
-                    <i class="bi bi-person-plus"></i>
-                    Nuevo Usuario</button>
-                <?php }?>
-            </h1>
-        </div>
+                </h1>
+            </div>
+            <button class="btn btn-warning" type="button" data-bs-toggle="modal" onclick="openModal();">
+                <i class="bi bi-person-plus"></i>
+                Nuevo Usuario</button>
+            <?php }?>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="bi bi-house"></i></li>
             <li class="breadcrumb-item"><a href="<?=base_url();?>/usuarios"><?=$data['page_title']?></a></li>
@@ -29,6 +29,9 @@ headerAdmin($data);
                                     <th>ID</th>
                                     <th>Identificación</th>
                                     <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>celular</th>
+                                    <th>correo</th>
                                     <th>Rol</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
