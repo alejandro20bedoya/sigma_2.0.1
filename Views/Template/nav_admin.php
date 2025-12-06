@@ -3,15 +3,39 @@
     <aside class="app-sidebar">
 
         <!-- esta es la imagennd ell perfil -->
+        <div class="mb-2 text-center">
+            <?php
+            // Tomar el nombre de la foto desde la sesión (que viene de la BD)
+            $foto = $_SESSION['userData']['imgperfil'];
+
+            // Ruta física donde se guarda la imagen
+            $rutaLocal = "Assets/images/uploads/perfiles/" . $foto;
+
+            // Ruta web para mostrar la imagen en el navegador
+            $rutaWeb = media() . "/images/uploads/perfiles/" . $foto;
+
+            // Validar si la imagen existe físicamente
+            if (empty($foto) || !file_exists($rutaLocal)) {
+                $rutaWeb = media() . "/images/uploads/perfiles/sinimagen.jpg";
+            }
+            ?>
+
+            <img src="<?= $rutaWeb; ?>"
+                class="rounded-circle shadow"
+                width="50"
+                height="50"
+                style="object-fit: cover; border: 2px solid white;">
+        </div>
 
         <div class="text-center">
-            <p class="app-sidebar__user-name text-white fw-bold fs-5 mb-0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <p class="app-sidebar__user-name text-white fw-bold fs-5 mb-0">
                 <?= $_SESSION['userData']['nombres']; ?>
             </p>
-            <p class="app-sidebar__user-designation text-white-50 fst-italic mb-0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <p class="app-sidebar__user-designation text-white-50 fst-italic mb-0">
                 <?= $_SESSION['userData']['nombrerol']; ?>
             </p>
         </div>
+
 
 
 
