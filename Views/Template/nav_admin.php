@@ -5,17 +5,13 @@
         <!-- esta es la imagennd ell perfil -->
         <div class="mb-2 text-center">
             <?php
-            // Tomar el nombre de la foto desde la sesión (que viene de la BD)
+            // Si hay imagen en Base64, usarla directamente
             $foto = $_SESSION['userData']['imgperfil'];
 
-            // Ruta física donde se guarda la imagen
-            $rutaLocal = "Assets/images/uploads/perfiles/" . $foto;
-
-            // Ruta web para mostrar la imagen en el navegador
-            $rutaWeb = media() . "/images/uploads/perfiles/" . $foto;
-
-            // Validar si la imagen existe físicamente
-            if (empty($foto) || !file_exists($rutaLocal)) {
+            if (!empty($foto)) {
+                $rutaWeb = $foto; // Base64 para <img>
+            } else {
+                // Imagen por defecto
                 $rutaWeb = media() . "/images/uploads/perfiles/sinimagen.jpg";
             }
             ?>
@@ -26,6 +22,7 @@
                 height="50"
                 style="object-fit: cover; border: 2px solid white;">
         </div>
+
 
         <div class="text-center">
             <p class="app-sidebar__user-name text-white fw-bold fs-5 mb-0">

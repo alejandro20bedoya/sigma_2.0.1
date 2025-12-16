@@ -40,12 +40,10 @@ class PerfilModel extends Mysql
         return $request;
     }
 
-
-
-    public function selectUsuario(int $ideusuario)
+    public function selectUsuarioperfil(int $ideusuario)
     {
         $this->intIdeUsuario = $ideusuario;
-        $sql = "SELECT  u.ideusuario,u.identificacion,u.nombres,u.apellidos,u.celular,u.correo,u.rolid,u.status,r.idrol,r.nombrerol
+        $sql = "SELECT u.ideusuario,u.identificacion,u.nombres,u.apellidos,u.celular,u.correo,u.rolid,u.status,r.idrol,r.nombrerol
                 FROM tbl_usuarios u
                 INNER JOIN rol r
                 ON u.rolid = r.idrol
@@ -55,57 +53,73 @@ class PerfilModel extends Mysql
     }
 
     //ACTUALIZAR USUARIO
-    public function updateUsuario(
+    public function updatePerfil(
         int $ideusuario,
         string $identificacion,
         string $nombres,
         string $apellidos,
         string $celular,
         string $correo,
-        string $rol,
-        string $status
+        ?string $foto = null
     ) {
+        // VALIDAR DUPLICADOS
+        $sql = "SELECT ideusuario FROM tbl_usuarios
+            WHERE ideusuario != ?
+            AND (identificacion = ? OR correo = ? OR celular = ?)";
 
-        $this->intIdeUsuario = $ideusuario;
-        $this->strIdentificacionUsuario = $identificacion;
-        $this->strNombresUsuario = $nombres;
-        $this->strApellidosUsuario = $apellidos;
-        $this->strCelularUsuario = $celular;
-        $this->strCorreoUsuario = $correo;
-        $this->strRolUsuario = $rol;
-        $this->strStatus = $status;
+        $arrData = [
+            $ideusuario,
+            $identificacion,
+            $correo,
+            $celular
+        ];
 
-        $sql = "SELECT * FROM tbl_usuarios WHERE (identificacion = '{$this->strIdentificacionUsuario}' AND ideusuario != $this->intIdeUsuario)
-        OR (nombres = '{$this->strNombresUsuario}' AND ideusuario != $this->intIdeUsuario)
-        OR (apellidos = '{$this->strApellidosUsuario}' AND ideusuario != $this->intIdeUsuario)
-        OR (celular = '{$this->strCelularUsuario}' AND ideusuario != $this->intIdeUsuario)
-        OR (correo = '{$this->strCorreoUsuario}' AND ideusuario != $this->intIdeUsuario)
-        OR (rolid = '{$this->strRolUsuario}' AND ideusuario != $this->intIdeUsuario)";
-        $request != $this->select_all($sql);
+        $request = $this->select_all($sql, $arrData);
 
-        if (empty($request)) {
-            // TODO PENDIENTE LA VALIDACIÓN SI EL CODIGO ES IGUAL QUE EL CODIGO DE OTRO USUARIO
-            if (($this->strIdentificacionUsuario != "" or $this->strIdentificacionUsuario !=  $this->strIdentificacionUsuario)) {
-
-                $sql = "UPDATE tbl_usuarios SET identificacion=?,nombres=?,apellidos=?,celular=?,correo=?, rolid=?, status=?
-						WHERE ideusuario = $this->intIdeUsuario ";
-
-                $arrData = array(
-                    $this->strIdentificacionUsuario,
-                    $this->strNombresUsuario,
-                    $this->strApellidosUsuario,
-                    $this->strCelularUsuario,
-                    $this->strCorreoUsuario,
-                    $this->strRolUsuario,
-                    $this->strStatus
-                );
-            }
-            $request = $this->update($sql, $arrData);
-        } else {
-            $request = "exist";
+        if (!empty($request)) {
+            return "exist";
         }
-        return $request;
+
+        // ACTUALIZAR
+        if ($foto != null) {
+            $sql = "UPDATE tbl_usuarios 
+                SET identificacion = ?, 
+                    nombres = ?, 
+                    apellidos = ?, 
+                    celular = ?, 
+                    correo = ?, 
+                    imgperfil = ?
+                WHERE ideusuario = ?";
+            $arrData = [
+                $identificacion,
+                $nombres,
+                $apellidos,
+                $celular,
+                $correo,
+                $foto,
+                $ideusuario
+            ];
+        } else {
+            $sql = "UPDATE tbl_usuarios 
+                SET identificacion = ?, 
+                    nombres = ?, 
+                    apellidos = ?, 
+                    celular = ?, 
+                    correo = ?
+                WHERE ideusuario = ?";
+            $arrData = [
+                $identificacion,
+                $nombres,
+                $apellidos,
+                $celular,
+                $correo,
+                $ideusuario
+            ];
+        }
+
+        return $this->update($sql, $arrData);
     }
+
     //eliminar usuario
     public function deleteUsuario(int $intIdeUsuario)
     {

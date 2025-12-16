@@ -145,6 +145,8 @@ class Usuarios extends Controllers
         }
         die();
     }
+
+    
     // ELIMINAR USUARIO
     public function delUsuario()
     {

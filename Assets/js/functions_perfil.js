@@ -63,77 +63,60 @@ document.addEventListener(
 
                 divLoading.style.display = "flex";
 
-                // TOMAMOS TODO EL FORMULARIO, INCLUYE FOTO + CAMPOS
                 let formData = new FormData(formUsuario);
 
-                // Validar foto
+                // FOTO (opcional)
                 let inputFoto = document.querySelector("#fotoUsuario");
-                if (inputFoto.files.length === 0) {
-                    divLoading.style.display = "none";
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Atención",
-                        text: "Debe seleccionar una foto",
-                    });
-                    return;
-                }
 
-                // Asegurar que el ID SI se envía correctamente
+                // Asegurar ID
                 let ideUsuario = document.querySelector("#ideUsuarioperfil").value.trim();
-                formData.set("ideUsuarioperfil", ideUsuario); // REEMPLAZA si existe
+                formData.set("ideUsuarioperfil", ideUsuario);
 
                 let request = new XMLHttpRequest();
                 request.open("POST", base_url + "/Perfil/setPerfil", true);
 
                 request.onreadystatechange = function () {
                     if (request.readyState === 4) {
+
                         divLoading.style.display = "none";
 
                         if (request.status === 200) {
 
-                            console.log("Respuesta recibida:", request.responseText);
-
                             let objData;
                             try {
                                 objData = JSON.parse(request.responseText);
-                            } catch (error) {
-                                console.error("Error al parsear JSON:", error);
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Error",
-                                    text: "La respuesta del servidor no es válida",
-                                });
+                            } catch (e) {
+                                Swal.fire("Error", "Respuesta inválida del servidor", "error");
                                 return;
                             }
 
                             if (objData.status) {
 
-                                // Cerrar modal CORREGIDO
+                                // Cerrar modal
                                 $("#modalFormUsuarioperfil").modal("hide");
 
-                                // Limpiar foto
-                                inputFoto.value = "";
+                                // Limpiar input file
+                                if (inputFoto) inputFoto.value = "";
 
                                 Swal.fire({
                                     icon: "success",
-                                    title: "¡Éxito!",
+                                    title: "Éxito",
                                     text: objData.msg,
+                                    timer: 1500,
+                                    showConfirmButton: false
                                 });
 
+                                // 🔄 RECARGAR TODA LA PÁGINA (CTRL + R)
+                                setTimeout(() => {
+                                    location.reload(true);
+                                }, 1500);
+
                             } else {
-                                Swal.fire({
-                                    icon: "warning",
-                                    title: "Atención",
-                                    text: objData.msg,
-                                });
+                                Swal.fire("Atención", objData.msg, "warning");
                             }
 
                         } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Error",
-                                text: "Error en la petición",
-                            });
+                            Swal.fire("Error", "Error en la petición", "error");
                         }
                     }
                 };
@@ -146,105 +129,47 @@ document.addEventListener(
     false
 );
 
-function fntViewInfo(ideusuario) {
-    let request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
-    let ajaxUrl = base_url + "/Usuarios/getUsuario/" + ideusuario;
-    request.open("GET", ajaxUrl, true);
-    request.send();
-    request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            let objData = JSON.parse(request.responseText);
-            if (objData.status) {
-                let estadoUsuario =
-                    objData.data.status == 1
-                        ? '<span class="badge text-bg-success">Activo</span>'
-                        : '<span class="badge text-bg-danger">Inactivo</span>';
-
-                document.querySelector("#celIdeUsuario").innerHTML =
-                    objData.data.ideusuario;
-                document.querySelector("#celIdentificacionUsuario").innerHTML =
-                    objData.data.identificacion; ///  berificacion de base de datos
-                document.querySelector("#celNombresUsuario").innerHTML =
-                    objData.data.nombres;
-                document.querySelector("#celApellidosUsuario").innerHTML =
-                    objData.data.apellidos;
-                document.querySelector("#celCelularUsuario").innerHTML =
-                    objData.data.celular;
-                document.querySelector("#celCorreoUsuario").innerHTML =
-                    objData.data.correo;
-                document.querySelector("#celRolUsuario").innerHTML = objData.data.rolid;
-                document.querySelector("#celEstadoUsuario").innerHTML = estadoUsuario;
-                // document.querySelector("#celNombrePrograma").innerHTML = objData.data.nombreprograma;
-
-                $("#modalViewUsuario").modal("show");
-            } else {
-                swal("Error", objData.msg, "error");
-            }
-        }
-    };
-}
 
 // editar el usuario
 function fntEditInfo(element, ideusuario) {
+    rowTable = element.closest("tr");
 
-    rowTable = element.parentNode.parentNode.parentNode;
     document.querySelector("#titleModal").innerHTML = "Actualizar Usuario";
-
-    document.querySelector(".modal-header")
+    document
+        .querySelector(".modal-header")
         .classList.replace("headerRegister", "headerUpdate");
 
-    document.querySelector("#btnActionForm")
+    document
+        .querySelector("#btnActionForm")
         .classList.replace("btn-success", "btn-info");
 
     document.querySelector("#btnText").innerHTML = "Actualizar";
 
-    let request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
+    let request = new XMLHttpRequest();
+    let ajaxUrl = base_url + "/Perfil/getUsuarioperfil/" + ideusuario;
 
-    let ajaxUrl = base_url + "/Usuarios/getUsuario/" + ideusuario;
     request.open("GET", ajaxUrl, true);
     request.send();
 
     request.onreadystatechange = function () {
-
-        if (request.readyState == 4 && request.status == 200) {
+        if (request.readyState === 4 && request.status === 200) {
             let objData = JSON.parse(request.responseText);
 
             if (objData.status) {
-
                 document.querySelector("#ideUsuarioperfil").value = objData.data.ideusuario;
                 document.querySelector("#txtIdentificacionUsuario").value = objData.data.identificacion;
                 document.querySelector("#txtNombresUsuario").value = objData.data.nombres;
                 document.querySelector("#txtApellidosUsuario").value = objData.data.apellidos;
                 document.querySelector("#txtCelularUsuario").value = objData.data.celular;
                 document.querySelector("#txtCorreoUsuario").value = objData.data.correo;
-
-                if (objData.data.status == 1) {
-                    document.querySelector("#listStatus").value = 1;
-                } else {
-                    document.querySelector("#listStatus").value = 2;
-                }
             }
+
+            // ✅ ABRIR MODAL (BOOTSTRAP 5)
+            let modal = new bootstrap.Modal(
+                document.getElementById("modalFormUsuarioperfil")
+            );
+            modal.show();
         }
-
-        /* -------------------------------------------------------
-           AL EDITAR:
-           - Mostrar todos los campos
-           - Ocultar subir foto
-        ------------------------------------------------------- */
-        document.querySelectorAll(".user-fields").forEach(el => {
-            el.style.display = "block";
-        });
-
-        // OCULTAR el campo foto en editar
-        document.querySelector("#fotoUsuario").parentNode.style.display = "none";
-
-        /* ------------------------------------------------------- */
-
-        $("#modalFormUsuarioperfil").modal("show");
     };
 }
 

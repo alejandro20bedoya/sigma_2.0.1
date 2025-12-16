@@ -82,6 +82,7 @@ class UsuariosModel extends Mysql
         return $request;
     }
 
+    /// buscar un usuario
     public function selectUsuario(int $ideusuario)
     {
         $this->intIdeUsuario = $ideusuario;

@@ -33,31 +33,126 @@ class Perfil extends Controllers
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
 
-        if ($_POST || $_FILES) {
+        if ($_POST) {
 
-            if (!isset($_FILES['fotoUsuario']) || $_FILES['fotoUsuario']['error'] != 0) {
-                echo json_encode(["status" => false, "msg" => "Debe seleccionar una foto."], JSON_UNESCAPED_UNICODE);
+            // 1️⃣ ID OBLIGATORIO
+            if (empty($_POST['ideUsuarioperfil'])) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'ID de usuario no válido'
+                ], JSON_UNESCAPED_UNICODE);
                 die();
             }
 
-            // ID del usuario logueado
-            $intIdeUsuario = $_SESSION['idUser'];
+            $idUsuario = intval($_POST['ideUsuarioperfil']);
 
-            $fotoUsuario = $_FILES['fotoUsuario'];
-            $nombreArchivo = uniqid() . "_" . $fotoUsuario['name'];
+            // 2️⃣ DATOS
+            $identificacion = $_POST['txtIdentificacionUsuario'];
+            $nombres         = $_POST['txtNombresUsuario'];
+            $apellidos       = $_POST['txtApellidosUsuario'];
+            $celular         = $_POST['txtCelularUsuario'];
+            $correo          = $_POST['txtCorreoUsuario'];
 
-            // Subir imagen
-            uploadImage($fotoUsuario, $nombreArchivo);
+            // 3️⃣ FOTO (OPCIONAL)
+            $base64 = null;
 
-            // Actualizar SOLO foto
-            $request = $this->model->updateFotoPerfil($intIdeUsuario, $nombreArchivo);
+            if (isset($_FILES['fotoUsuario']) && $_FILES['fotoUsuario']['error'] == 0) {
 
-            if ($request > 0) {
-                $arrResponse = ['status' => true, 'msg' => 'Foto actualizada correctamente', 'foto' => $nombreArchivo];
-            } else {
-                $arrResponse = ['status' => false, 'msg' => 'No se pudo actualizar la foto'];
+                $fotoTmp = $_FILES['fotoUsuario']['tmp_name'];
+                $tipo    = mime_content_type($fotoTmp);
+                $contenido = file_get_contents($fotoTmp);
+
+                $base64 = "data:" . $tipo . ";base64," . base64_encode($contenido);
             }
 
+            // 4️⃣ ACTUALIZAR PERFIL
+            $request = $this->model->updatePerfil(
+                $idUsuario,
+                $identificacion,
+                $nombres,
+                $apellidos,
+                $celular,
+                $correo,
+                $base64
+            );
+
+            // 5️⃣ RESPUESTA
+            if ($request > 0) {
+
+                // Si es el usuario logueado, actualiza sesión
+                if ($idUsuario == $_SESSION['idUser'] && $base64 != null) {
+                    $_SESSION['userData']['imgperfil'] = $base64;
+                }
+
+                $arrResponse = [
+                    'status' => true,
+                    'msg' => 'Perfil actualizado correctamente'
+                ];
+            } else {
+                $arrResponse = [
+                    'status' => false,
+                    'msg' => 'No se pudo actualizar el perfil'
+                ];
+            }
+
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            die();
+        }
+    }
+
+
+    public function setEditperfil()
+    {
+        // Mostrar errores en caso de que existan (para desarrollo)
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
+        if ($_POST) {
+
+            // Recibir datos del formulario
+            $idUsuario      = intval($_POST['ideUsuarioperfil']);
+            $identificacion = strClean($_POST['txtIdentificacionUsuario']);
+            $nombres        = strClean($_POST['txtNombresUsuario']);
+            $apellidos      = strClean($_POST['txtApellidosUsuario']);
+            $celular        = strClean($_POST['txtCelularUsuario']);
+            $correo         = strClean($_POST['txtCorreoUsuario']);
+            $status         = isset($_POST['listStatus']) ? intval($_POST['listStatus']) : 1;
+
+            // Llamar al modelo para actualizar (sin foto)
+            $request = $this->model->updateUsuario(
+                $idUsuario,
+                $identificacion,
+                $nombres,
+                $apellidos,
+                $celular,
+                $correo,
+                $status,
+                null // foto = null porque no se actualiza aquí
+            );
+
+            // Preparar la respuesta
+            if ($request) {
+                $arrResponse = [
+                    'status' => true,
+                    'msg'    => 'Usuario actualizado correctamente',
+                    'data'   => [
+                        'ideusuario'     => $idUsuario,
+                        'identificacion' => $identificacion,
+                        'nombres'        => $nombres,
+                        'apellidos'      => $apellidos,
+                        'celular'        => $celular,
+                        'correo'         => $correo
+                    ]
+                ];
+            } else {
+                $arrResponse = [
+                    'status' => false,
+                    'msg'    => 'No se pudo actualizar el usuario'
+                ];
+            }
+
+            // Devolver JSON limpio
+            header('Content-Type: application/json');
             echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         }
 
@@ -120,22 +215,23 @@ class Perfil extends Controllers
     }
 
     // editar usuario
-    public function getUsuario($ideusuario)
+    public function getUsuarioperfil($ideusuario)
     {
-        // if ($_SESSION['permisosMod']['r']) {
-        //     $ideusuario = intval($ideusuario);
-        //     if ($ideusuario > 0) {
-        //         $arrData = $this->model->selectUsuario($ideusuario);
-        //         if (empty($arrData)) {
-        //             $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
-        //         } else {
-        //             $arrResponse = array('status' => true, 'data' => $arrData);
-        //         }
-        //         echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-        //     }
-        // }
-        // die();
+        if ($_SESSION['permisosMod']['r']) {
+            $ideusuario = intval($ideusuario);
+            if ($ideusuario > 0) {
+                $arrData = $this->model->selectUsuarioperfil($ideusuario);
+                if (empty($arrData)) {
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+                } else {
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            }
+        }
+        die();
     }
+
     // ELIMINAR USUARIO
     public function delUsuario()
     {

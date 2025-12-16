@@ -9,10 +9,10 @@ headerAdmin($data);
                 <?php if ($_SESSION['permisosMod']['w']) { ?>
             </h1>
         </div>
-        <button class="btn btn-warning" type="button" onclick="openModalPerfil();">
+        <!-- <button class="btn btn-warning" type="button" onclick="openModalPerfil();">
             <i class="bi bi-image"></i>
             Cambiar foto de Perfil
-        </button>
+        </button> -->
 
     <?php } ?>
     <ul class="app-breadcrumb breadcrumb">

@@ -14,7 +14,7 @@
                     <div class="tile-body">
                         <form id="formUsuarioperfil" name=" formUsuarioperfil" enctype="multipart/form-data" method="POST">
                             <!-- id de los usuarios    -->
-                            <input type="text" id="ideUsuarioperfil" name="ideUsuarioperfil" value="">
+                            <input type="hidden" id="ideUsuarioperfil" name="ideUsuarioperfil" value="">
 
                             <div class="modal-body">
                                 <!-- <p class="text-primary">Los campos con asterisco (<span class="required">*</span>) son
@@ -175,3 +175,5 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
