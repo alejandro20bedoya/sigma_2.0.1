@@ -16,7 +16,7 @@ document.addEventListener(
             },
 
             columns: [
-                { data: "ideusuario" },
+                // { data: "ideusuario" },
                 { data: "identificacion" }, /// sonas de cambio
                 { data: "nombres" },
                 { data: "apellidos" },
@@ -129,6 +129,46 @@ document.addEventListener(
     false
 );
 
+// vista de informacion
+function fntViewInfo(ideusuario) {
+    let request = window.XMLHttpRequest
+        ? new XMLHttpRequest()
+        : new ActiveXObject("Microsoft.XMLHTTP");
+    let ajaxUrl = base_url + "/Usuarios/getUsuario/" + ideusuario;
+    request.open("GET", ajaxUrl, true);
+    request.send();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            let objData = JSON.parse(request.responseText);
+            if (objData.status) {
+                let estadoUsuario =
+                    objData.data.status == 1
+                        ? '<span class="badge text-bg-success">Activo</span>'
+                        : '<span class="badge text-bg-danger">Inactivo</span>';
+
+                // document.querySelector("#celIdeUsuario").innerHTML =
+                //     objData.data.ideusuario;
+                document.querySelector("#celIdentificacionUsuario").innerHTML =
+                    objData.data.identificacion; ///  berificacion de base de datos
+                document.querySelector("#celNombresUsuario").innerHTML =
+                    objData.data.nombres;
+                document.querySelector("#celApellidosUsuario").innerHTML =
+                    objData.data.apellidos;
+                document.querySelector("#celCelularUsuario").innerHTML =
+                    objData.data.celular;
+                document.querySelector("#celCorreoUsuario").innerHTML =
+                    objData.data.correo;
+                document.querySelector("#celRolUsuario").innerHTML = objData.data.rolid;
+                document.querySelector("#celEstadoUsuario").innerHTML = estadoUsuario;
+                // document.querySelector("#celNombrePrograma").innerHTML = objData.data.nombreprograma;
+
+                $("#modalViewUsuario").modal("show");
+            } else {
+                swal("Error", objData.msg, "error");
+            }
+        }
+    };
+}
 
 // editar el usuario
 function fntEditInfo(element, ideusuario) {
@@ -225,6 +265,7 @@ function fntDelInfo(ideusuario) {
     });
 }
 
+//modal
 function openModalPerfil() {
 
     // limpiar id

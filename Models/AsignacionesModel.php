@@ -73,14 +73,14 @@ class AsignacionesModel extends Mysql
                 td.totalhoras,
                 td.status
             FROM tbl_detalle_fichas AS td
-            left JOIN tbl_usuarios AS u
+            LEFT JOIN tbl_usuarios AS u
                 ON td.ideinstructor = u.ideusuario
-            left JOIN tbl_competencias AS c   
+            LEFT JOIN tbl_competencias AS c   
                 ON td.idecompetencia = c.codigocompetencia
-            WHERE td.status != 0";
+            WHERE td.status != 0
+            ORDER BY td.idedetalleficha DESC"; // 👈 NUEVOS PRIMERO
 
-        $request = $this->select_all($sql);
-        return $request;
+        return $this->select_all($sql);
     }
 
 

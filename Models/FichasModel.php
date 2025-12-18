@@ -26,15 +26,12 @@ class FichasModel extends Mysql
                 tu.nombres
             FROM tbl_fichas tf
             LEFT JOIN tbl_programas tp ON tp.ideprograma = tf.programaide
-            LEFT JOIN tbl_usuarios tu  ON tu.ideusuario = tf.usuarioide";
+            LEFT JOIN tbl_usuarios tu  ON tu.ideusuario = tf.usuarioide
+            ORDER BY tf.ideficha DESC"; // 👈 NUEVAS PRIMERO
 
-        // Ejecutar y debug
-        $request = $this->select_all($sql);
-        error_log('DEBUG - SQL ejecutado selectFichas: ' . $sql);
-        error_log('DEBUG - Resultado selectFichas: ' . print_r($request, true));
-
-        return $request;
+        return $this->select_all($sql);
     }
+
 
     //VISTA INFORMACIÓN PROGRAMA
     public function selectFicha(int $ideficha)
@@ -95,7 +92,7 @@ class FichasModel extends Mysql
             $query_insert = "INSERT INTO tbl_fichas(programaide, numeroficha, usuarioide) 
                          VALUES('$programaEscaped', '$numeroEscaped', '$usuarioEscaped')";
 
-            $request_insert = $this->insert($query_insert, []); 
+            $request_insert = $this->insert($query_insert, []);
             // array vacío porque tu método exige 2 argumentos
             $return = $request_insert;
         } else {

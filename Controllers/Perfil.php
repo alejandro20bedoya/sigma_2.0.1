@@ -195,11 +195,11 @@ class Perfil extends Controllers
                 <i class="fas fa-pencil-alt"></i></button>';
                 }
 
-                if ($_SESSION['permisosMod']['d']) {
-                    $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelInfo('
-                        . $arrData[$i]['ideusuario'] . ')" title="Eliminar Usuario">
-                <i class="bi bi-trash3"></i></button>';
-                }
+                // if ($_SESSION['permisosMod']['d']) {
+                //     $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelInfo('
+                //         . $arrData[$i]['ideusuario'] . ')" title="Eliminar Usuario">
+                // <i class="bi bi-trash3"></i></button>';
+                // }
 
                 // OPCIONES
                 $arrData[$i]['options'] = htmlspecialchars_decode(

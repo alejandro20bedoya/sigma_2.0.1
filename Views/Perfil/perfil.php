@@ -28,7 +28,7 @@ headerAdmin($data);
                         <table class="table table-hover table-bordered" id="tablePerfil">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <!-- <th>ID</th> -->
                                     <th>Identificación</th>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>

@@ -26,8 +26,17 @@
 
                             <div class="modal-body user-fields">
                                 <label for="txtIdentificacionUsuario"">Identificación<span class="
-                                    required">*</span></label>
-                                <input type="text" class="form-control valid validNumber" id="txtIdentificacionUsuario"
+                                    readonly">*</span></label>
+                                <input type="text" class="form-control valid validNumber" readonly id="txtIdentificacionUsuario"
+                                    style="
+                                        background-color: #d4edda;      
+                                        border: 2px solid #28a745;       
+                                        color: #000000ff;                 
+                                        font-weight: 600;
+                                        border-radius: 8px;
+                                        box-shadow: 0 0 5px rgba(40,167,69,0.3);
+                                        transition: all 0.3s ease;"
+                                        
                                     name="txtIdentificacionUsuario" maxlength="10"
                                     onkeypress="return controlTag(event);">
                             </div>
@@ -126,10 +135,10 @@
 
                         <table class="table table-bordered">
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <td>ID:</td>
                                     <td id="celIdeUsuario">233104</td>
-                                </tr>
+                                </tr> -->
 
                                 <tr>
                                     <td>Identificación:</td>

@@ -29,8 +29,11 @@ class Usuarios extends Controllers
     // funcione para agregar 
     public function setUsuario()
     {
-        error_reporting(0);
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
         if ($_POST) {
+
             if (empty($_POST['txtIdentificacionUsuario'])) {
                 $arrResponse = array("status" => false, "msg" => 'Datos incorrectos.');
             } else {
@@ -146,7 +149,7 @@ class Usuarios extends Controllers
         die();
     }
 
-    
+
     // ELIMINAR USUARIO
     public function delUsuario()
     {

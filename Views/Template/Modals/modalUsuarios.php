@@ -26,8 +26,8 @@
                             <div class="modal-body">
                                 <label for="txtIdentificacionUsuario"">Identificación<span class="
                                     required">*</span></label>
-                                <input type="text" class="form-control valid validNumber" id="txtIdentificacionUsuario"
-                                    name="txtIdentificacionUsuario" required="" maxlength="10"
+                                <input type="number" class="form-control valid validNumber" id="txtIdentificacionUsuario"
+                                    name="txtIdentificacionUsuario" required="" maxlength="15"
                                     onkeypress="return controlTag(event);">
                             </div>
 
@@ -35,7 +35,7 @@
                                 <label for="txtNombresUsuario"">Nombres<span class="
                                     required">*</span></label>
                                 <input type="text" class="form-control valid validText" id="txtNombresUsuario"
-                                    name="txtNombresUsuario" required="" maxlength="30"
+                                    name="txtNombresUsuario" required="" maxlength="40"
                                     onkeypress="return controlTag(event);">
                             </div>
 
@@ -50,8 +50,8 @@
                             <div class="modal-body">
                                 <label for="txtCelularUsuario"">Celular<span class="
                                     required">*</span></label>
-                                <input type="text" class="form-control valid validText" id="txtCelularUsuario"
-                                    name="txtCelularUsuario" required="" maxlength="30"
+                                <input type="number" class="form-control valid validText" id="txtCelularUsuario"
+                                    name="txtCelularUsuario" required="" maxlength="10"
                                     onkeypress="return controlTag(event);">
                             </div>
 
@@ -59,7 +59,7 @@
                                 <label for="txtCorreoUsuario"">Correo<span class="
                                     required">*</span></label>
                                 <input type="text" class="form-control valid validText" id="txtCorreoUsuario"
-                                    name="txtCorreoUsuario" required="" maxlength="30"
+                                    name="txtCorreoUsuario" required="" maxlength="100"
                                     onkeypress="return controlTag(event);">
                             </div>
 

@@ -16,6 +16,7 @@ class UsuariosModel extends Mysql
         parent::__construct();
     }
 
+    // insertar datos a la base de datos o gregar usuario
     public function insertUsuario(
         string $identificacion,
         string $nombres,  // sonas de cambio 
@@ -40,6 +41,8 @@ class UsuariosModel extends Mysql
 				identificacion = '{$this->strIdentificacionUsuario}'";
         $request = $this->select_all($sql);
 
+
+
         if (empty($request)) {
 
             // $rs = 1;
@@ -60,7 +63,8 @@ class UsuariosModel extends Mysql
             $request_insert = $this->insert($query_insert, $arrData);
             $return = $request_insert;
         } else {
-            $return = "exist";
+
+            $return = "error";
         }
         return $return;
     }
