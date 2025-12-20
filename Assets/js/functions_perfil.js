@@ -134,7 +134,7 @@ function fntViewInfo(ideusuario) {
     let request = window.XMLHttpRequest
         ? new XMLHttpRequest()
         : new ActiveXObject("Microsoft.XMLHTTP");
-    let ajaxUrl = base_url + "/Usuarios/getUsuario/" + ideusuario;
+    let ajaxUrl = base_url + "/Perfil/getUsuario/" + ideusuario;
     request.open("GET", ajaxUrl, true);
     request.send();
     request.onreadystatechange = function () {

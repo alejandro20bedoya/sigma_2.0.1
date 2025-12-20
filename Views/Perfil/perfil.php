@@ -6,7 +6,7 @@ headerAdmin($data);
     <div class="app-title">
         <div>
             <h1><i class="bi bi-people"></i> <?= $data['page_title'] ?>
-                <?php if ($_SESSION['permisosMod']['w']) { ?>
+                <?php //if ($_SESSION['permisosMod']['w']) { ?>
             </h1>
         </div>
         <!-- <button class="btn btn-warning" type="button" onclick="openModalPerfil();">
@@ -14,7 +14,7 @@ headerAdmin($data);
             Cambiar foto de Perfil
         </button> -->
 
-    <?php } ?>
+    <!-- <?php //} ?> -->
     <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house"></i></li>
         <li class="breadcrumb-item"><a href="<?= base_url(); ?>/perfil"><?= $data['page_title'] ?></a></li>

@@ -304,7 +304,7 @@ $progreso = isset($data['progresoAsignaciones']) ? $data['progresoAsignaciones']
     </div>
     <div class="row">
 
-        <?php if (!empty($_SESSION['permisos'][2]['r'])) { ?>
+        <?php if (!empty($_SESSION['permisos'][2]['r']) ) { ?>
             <div class="col-md-6 col-lg-3">
                 <a href="<?= base_url() ?>/usuarios" class="linkw">
                     <div class="widget-small primary coloured-icon"><i class="icon bi bi-people fs-1"></i>

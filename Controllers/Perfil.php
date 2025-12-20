@@ -7,19 +7,19 @@ class Perfil extends Controllers
         parent::__construct();
         session_start();
         session_regenerate_id(true);
-        if (empty($_SESSION['login'])) {
-            header('Location: ' . base_url() . '/login');
-            die();
-        }
+        // if (empty($_SESSION['login'])) {
+        //     header('Location: ' . base_url() . '/login');
+        //     die();
+        // }
         getPermisos(MUSUARIOS);
     }
 
 
     public function Perfil()
     {
-        if (empty($_SESSION['permisosMod']['r'])) {
-            header("Location:" . base_url() . '/dashboard');
-        }
+        // if (empty($_SESSION['permisosMod']['r'])) {
+        //     header("Location:" . base_url() . '/dashboard');
+        // }
         $data['page_tag'] = "Perfil";
         $data['page_title'] = "Configuracion de Perfil";
         $data['page_name'] = "perfil";
@@ -163,7 +163,7 @@ class Perfil extends Controllers
     // lista de la tabla usuarios
     public function getPerfiles()
     {
-        if ($_SESSION['permisosMod']['r']) {
+        // if ($_SESSION['permisosMod']['r']) {
 
             header('Content-Type: application/json; charset=utf-8');
 
@@ -183,17 +183,17 @@ class Perfil extends Controllers
                 }
 
                 // BOTONES
-                if ($_SESSION['permisosMod']['r']) {
+                // if ($_SESSION['permisosMod']['r']) {
                     $btnView = '<button class="btn btn-info btn-sm" onClick="fntViewInfo('
                         . $arrData[$i]['ideusuario'] . ')" title="Ver Usuario">
                 <i class="far fa-eye"></i></button>';
-                }
+                // }
 
-                if ($_SESSION['permisosMod']['u']) {
+                // if ($_SESSION['permisosMod']['u']) {
                     $btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo(this,'
                         . $arrData[$i]['ideusuario'] . ')" title="Editar Usuario">
                 <i class="fas fa-pencil-alt"></i></button>';
-                }
+                // }
 
                 // if ($_SESSION['permisosMod']['d']) {
                 //     $btnDelete = '<button class="btn btn-danger btn-sm btnDelRol" onClick="fntDelInfo('
@@ -210,14 +210,14 @@ class Perfil extends Controllers
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
-        }
+        // }
         die();
     }
 
     // editar usuario
     public function getUsuarioperfil($ideusuario)
     {
-        if ($_SESSION['permisosMod']['r']) {
+        // if ($_SESSION['permisosMod']['r']) {
             $ideusuario = intval($ideusuario);
             if ($ideusuario > 0) {
                 $arrData = $this->model->selectUsuarioperfil($ideusuario);
@@ -228,25 +228,25 @@ class Perfil extends Controllers
                 }
                 echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
             }
-        }
+        // }
+        die();
+    }
+    // editar usuario
+    public function getUsuario($ideusuario)
+    {
+        // if ($_SESSION['permisosMod']['r']) {
+            $ideusuario = intval($ideusuario);
+            if ($ideusuario > 0) {
+                $arrData = $this->model->selectUsuarioperfil($ideusuario);
+                if (empty($arrData)) {
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+                } else {
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            }
+        // }
         die();
     }
 
-    // ELIMINAR USUARIO
-    public function delUsuario()
-    {
-        // if ($_POST) {
-        //     if ($_SESSION['permisosMod']['d']) {
-        //         $intIdeUsuario = intval($_POST['ideUsuario']);
-        //         $requestDelete = $this->model->deleteUsuario($intIdeUsuario);
-        //         if ($requestDelete) {
-        //             $arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Usuario');
-        //         } else {
-        //             $arrResponse = array('status' => false, 'msg' => 'Error al eliminar al Usuario.');
-        //         }
-        //         echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
-        //     }
-        // }
-        // die();
-    }
 }

@@ -149,6 +149,24 @@ class Usuarios extends Controllers
         die();
     }
 
+    // editar usuario
+    public function getUsuarioperfil($ideusuario)
+    {
+        if ($_SESSION['permisosMod']['r']) {
+            $ideusuario = intval($ideusuario);
+            if ($ideusuario > 0) {
+                $arrData = $this->model->selectUsuario($ideusuario);
+                if (empty($arrData)) {
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+                } else {
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            }
+        }
+        die();
+    }
+
 
     // ELIMINAR USUARIO
     public function delUsuario()

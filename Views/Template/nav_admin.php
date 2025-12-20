@@ -12,7 +12,7 @@
                 $rutaWeb = $foto; // Base64 para <img>
             } else {
                 // Imagen por defecto
-                $rutaWeb = media() . "/images/uploads/perfiles/sinimagen.jpg";
+                $rutaWeb = media() . "/images/uploads/perfiles/sinfoto.avif";
             }
             ?>
 
